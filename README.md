@@ -1,4 +1,4 @@
-# unpolish
+# unpolish-ai-writing
 
 Strip machine polish from prose, then (on forum/chat/social) add sparse hash-drawn texture. One action: **unpolish**. Not a detector bypass or a typo factory.
 
