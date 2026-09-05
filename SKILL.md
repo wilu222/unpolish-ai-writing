@@ -1,26 +1,17 @@
 ---
 name: unpolish
 description: >-
-  Strip machine polish from prose and restore social/forum register texture.
-  Use when text is too clean, sounds like AI or a humanizer, needs Reddit/chat/social
-  voice, or the user says "unpolish," "too polished," "make this sound posted,"
-  "remove AI slop," or "social register." One action: unpolish. Infers register,
-  texture, and whether to edit a file in place. Sparse hash-drawn texture
-  (~1 mark per 600 words on forum/chat/social). Not for detector evasion or typo spam.
+  Strip machine polish from prose. Use when text sounds like AI or a humanizer,
+  needs cleanup, or the user says "unpolish," "too polished," "remove AI slop,"
+  or "make this sound posted." One action: unpolish. Sparse hash-drawn texture
+  only when the user asks for it (~1 mark per 600 words). Not for detector
+  evasion or typo spam.
 license: MIT
 ---
 
 # Unpolish
 
-You rewrite prose so it no longer reads like a model — or like a model that was “humanized” into fake-casual smoothness. Subtract slop first. On forum/chat/social, add a light texture layer whose expected count is about one mark per 600 words (often zero; no hard cap). Prefer uneven human rhythm over performed mess.
-
-For theme write-ups, QWERTY neighbors, and checked fixtures, read [reference.md](reference.md) when needed. The replace-with table, lexical-slip table, and hash recipe live **here**.
-
-## What this is and isn’t
-
-- **Is:** a writing-quality + register tool (signals, not proof of authorship).
-- **Isn’t:** a Pangram/GPTZero bypass, a typo factory, or permission to invent anecdotes.
-- Patterns here also appear in rushed or second-language writing. Flag and fix for craft; don’t treat a hit as a verdict.
+You rewrite prose so it no longer reads like a model — or like a model that was “humanized” into fake-casual smoothness. Subtract slop first. Add texture **only** when the user asks (`add texture`, `texture`, `reroll`, `make it look posted` / typed). Prefer uneven human rhythm over performed mess.
 
 ## How to invoke
 
@@ -34,52 +25,31 @@ One action: **unpolish**. No mode flags, no CLI options. Infer everything from t
 
 Natural-language overrides (optional):
 
-- Texture: “no texture” **always wins**. “Add texture” forces texture on blog/docs. Otherwise texture follows the register table.
-- Reroll: “reroll,” “vary it,” “try another texture” → invent an internal salt/nonce. Users never pass hash parameters.
-
-## Axes
-
-**Register** (strictness + whether texture runs):
-
-| Register | Typical surfaces | Texture? |
-| --- | --- | --- |
-| `forum` | Reddit, HN, long comments | yes |
-| `chat` | Slack, Discord, DMs | yes |
-| `social` | X / short posts | yes |
-| `blog` | essays, newsletters | no unless user asks to add texture |
-| `docs` | README, API docs | no unless user asks to add texture |
-
-Auto-detect when unset: first-person informal conflict story → `forum`; README/API tone → `docs`; short punchy post → `social`; otherwise ask once or default `forum` for informal first person.
+- Texture: only if the user asked. “Reroll,” “vary it,” “try another texture” → invent an internal salt/nonce. Users never pass hash parameters.
 
 ## Pipeline
 
 ```
 Unpolish progress:
-- [ ] 1. Register
-- [ ] 2. Strip pass
-- [ ] 3. Second-pass audit
-- [ ] 4. Texture (if allowed)
-- [ ] 5. Deliver
+- [ ] 1. Strip pass
+- [ ] 2. Second-pass audit
+- [ ] 3. Texture (only if user asked)
+- [ ] 4. Deliver
 ```
 
 ```mermaid
 flowchart TD
-  input[Draft text] --> register[Detect register]
-  register --> strip[Strip machine slop]
+  input[Draft text] --> strip[Strip machine slop]
   strip --> audit[Second-pass audit]
-  audit --> texture[Texture layer]
+  audit --> texture[Texture if user asked]
   texture --> out[Unpolished draft]
 ```
 
-### 1. Register
-
-State the register you chose and why (one line). Apply strip rules to that register. Skip texture on `blog`/`docs` unless the user asked to add texture. If the user said “no texture,” skip texture regardless of register.
-
-### 2. Strip pass
+### 1. Strip pass
 
 Scan for the three buckets below. **Cluster > single hit** — one formal sentence is not a rewrite warrant; a pile of tells is.
 
-Fix must-fix items. Judgment-calls only when they stack or clash with the chosen register.
+Fix must-fix items. Judgment-calls only when they stack.
 
 **Leave alone:** code, tables, URLs, quotes, titles, proper names, numbers, attributed speech, and any passage that already sounds like a person typed it.
 
@@ -87,11 +57,11 @@ Fix must-fix items. Judgment-calls only when they stack or clash with the chosen
 
 #### Bucket A — Assistant residue (must-fix)
 
-- Chatbot openers/closers (“Certainly!”, “Happy to help!”, “Hope this helps!”)
+- Chatbot openers/closers (“Certainly!”, “Happy to help!”, “Hope this helps!”) — cut the opener **and** any advice-setup preamble; do not swap in “Here’s how I’d play it”
 - Training-cutoff or “as an AI” disclaimers
-- Reasoning leak (“I should be clear that…”, narrating your own drafting moves)
+- Reasoning leak (“I should be clear that…”, narrating your own drafting moves). Mid-thought self-correction (“wait, that’s not right —”) is human; keep it
 - Sycophancy / praise loops / recap-flattery openers (restating the user’s whole situation with praise before answering)
-- Curly/slanted quotation marks and apostrophes pasted from a chat UI — replace with straight `"` / `'` in the writer’s own prose (all registers). Leave untouched inside attributed quotes, code blocks, and locale-correct foreign punctuation
+- Curly/slanted quotation marks and apostrophes pasted from a chat UI — replace with straight `"` / `'` in the writer’s own prose. Leave untouched inside attributed quotes, code blocks, and locale-correct foreign punctuation
 - Not-X-it’s-Y pivots and stacked negations (“Not A. Not B. Just C.”) — zero tolerance; rewrite even a single instance
 
 #### Bucket B — False profundity (must-fix when repeated; else judgment)
@@ -102,17 +72,15 @@ Fix must-fix items. Judgment-calls only when they stack or clash with the chosen
 - Magic adverbs papering over a thin claim (see Always-replace below)
 - Parallel rule-of-three — must-fix when three items share the same grammatical skeleton (three short clauses, three VPs, three “It’s X” beats), even if all three facts are real. Fix by subordinating or merging clauses, **not** by chopping a clause into a subjectless fragment. Leave bare-noun inventories (shopping, ingredients) unless the line is also a three-beat slogan. Empty significance tails (`that matters`, `that isn't pretending to be X`) are not inventories — cut the tail or name the concrete spec
 - Copula dodge (“serves as”, “stands as”) where “is” works
-- Uniform paragraph / sentence length across the whole piece — also grammar and parallelism so clean it reads scripted in a casual register
+- Uniform paragraph / sentence length across the whole piece — also grammar and parallelism so clean it reads scripted in a casual register. Do **not** inject typos here — those belong only in the texture pass
 
 #### Bucket C — Machine cadence
 
-- Em-dash habit — always fix, every register, no per-1,000-word allowance
+- Em-dash habit — always fix
 - Synonym cycling — rotating synonyms to avoid repeating a word (`developers… engineers… practitioners… builders`). Human writers repeat the clearest word; if the same noun or verb appears three times and that's the right word, keep all three
 - Punchy one-line fragment abuse / manufactured punchlines — three or more same-shape beats in a row (standalone micro-sentences, tiny paragraphs, or parallel clauses inside one sentence used for fake breathiness)
 - Caption / diary subject-drop — declarative recap clauses with the implied first-person subject missing (`Made…`, `Fixed…`, `Went…`, `shut the valves, swapped…`). Opening sentence: always must-fix. 2+ drops: must-fix all. A drop that is also a triad beat always counts. Single interior drop, not in a triad: judgment-call. Restore the subject once per sentence/clause group; do not re-drop it to make a punchier fragment. Carve-outs: titles, ingredient/step blocks, changelogs, imperative recipe steps
 - Signposted wrap-ups and bow-tie closers — “In conclusion…”, “At the end of the day…”, twin-That’s (`That’s it. That’s the soup.`), category stickers (`It’s dinner.`, `That’s Thursday.`), announced closes (`That’s the update/post/method.`). Delete the bow; stop on the last concrete fact. Do not swap one sticker for a shorter one
-
-False-positive notes and theme detail: [reference.md](reference.md).
 
 #### Words and phrases to replace
 
@@ -198,7 +166,7 @@ Three tiers. Match **inflected forms** (quietly → quiet as significance paint;
 | noteworthy | state the fact |
 | interesting (empty) | name why, or cut |
 
-### 3. Second-pass audit
+### 2. Second-pass audit
 
 After the strip rewrite, answer both out loud (briefly):
 
@@ -207,92 +175,24 @@ After the strip rewrite, answer both out loud (briefly):
 
 Fix anything that fails. If the draft is structurally AI end-to-end, prefer a fuller rewrite over spot patches.
 
-### 4. Texture pass
+### 3. Texture pass
 
-Skip if the user said “no texture.” Otherwise only if register is `forum` / `chat` / `social`, or the user asked to add texture.
+**Skip unless the user asked for texture.** When they did, read [references/texture.md](references/texture.md) and apply it: λ ≈ max(0.05, word_count / 600), SHA-256 recipe, type bands, lexical pools, QWERTY. Soft skip is only Poisson P(k=0). Report `texture: none` or `texture: <type> @ …`.
 
-**Count (no hard cap):** expected marks **λ ≈ max(0.05, word_count / 600)**. Soft skip is only the Poisson mass at 0. Use **SHA-256 only** (no wall-clock, no djb2). When the user says “reroll” / “vary it,” invent an internal salt (`reroll1`, their phrase, …); otherwise `salt` is empty.
-
-**Hash recipe**
-
-1. **Normalize** the stripped rewrite: lowercase, collapse whitespace runs to a single space, keep the full string → `text`
-2. **Seeds:** `count_seed = "count|" + text + "|" + salt`; per slot `s` (0-based): `slot_seed = "slot|" + str(s) + "|" + text + "|" + salt`
-3. **Digest words:** `digest = SHA-256(UTF-8 bytes of seed)` (32 bytes); `W0…W5` = uint32 big-endian from `digest[0:4]`, `[4:8]`, … `[20:24]`
-4. **Poisson count:** `u = W0_count / 2^32` from `count_seed`; `k` = smallest `m ≥ 0` with `cdf_poisson(m; λ) ≥ u`
-5. For each slot `s` in `0 .. k-1`: hash `slot_seed` → words; `r = W0 % 100` → type band; walk if needed; apply W1–W5 per type. Choose all targets against the immutable pre-texture draft; avoid overlaps; apply high-to-low offset. Report `texture: none` or `texture: <type> @ …`
-
-**Types** — `r = W0 % 100` from the slot digest, then walk bands. If a type can’t apply, try the next band; if none apply → that slot is none.
-
-| `r` | Weight | Type |
-| --- | --- | --- |
-| 0–35 | 36 | Dropped apostrophe (`dont`, `Im`, `thats`) |
-| 36–53 | 18 | Missing end punctuation (**paragraph-final** only; empty pool → none, no walk) |
-| 54–67 | 14 | Uncapitalized sentence start (never standalone `I`) |
-| 68–79 | 12 | Extra space mid-sentence |
-| 80–93 | 14 | Lexical slip (two-pool table below) |
-| 94–99 | 6 | Keyboard slip (transposition or QWERTY neighbor; see reference) |
-
-Never-touch: names, numbers, quotes, titles, URLs, slur-adjacent.
-
-QWERTY neighbor map and checked fixtures: [reference.md](reference.md).
-
-#### Lexical slip table
-
-Do **not** invent a misspelling of a word that isn’t in the draft. Scan into two pools, then:
-
-1. `p = W3 % 10` — if `p == 0` (~10%) prefer **Pool B** (conventional nonword misspellings); else prefer **Pool A** (context / word-boundary slips)
-2. If Pool A is preferred and empty → walk to the next texture type (**do not** fall back to Pool B). If Pool B is preferred and empty → may fall back to Pool A; if that is also empty → walk bands
-3. `idx = W2 % pool.length` — one canonical form only
-
-**Pool A — context / word-boundary slips (default)**
-
-Real-word swaps and joined forms. Some (`alot`, `infact`, `aswell`) are nonwords a checker can catch; they still belong here because they are common informal leftovers, not school-list phonetics.
-
-| Source (must already appear) | Slip |
-| --- | --- |
-| could have / could've | could of |
-| should have / should've | should of |
-| would have / would've | would of |
-| might have / might've | might of |
-| must have / must've | must of |
-| a lot | alot |
-| in fact | infact |
-| as well | aswell |
-| lose (verb: fail to keep / be defeated) | loose |
-| losing (same meaning) | loosing |
-| than (comparison only: bigger than, rather than) | then |
-
-**Pool B — conventional nonword misspellings (rare: ~10% prefer)**
-
-| Source (must already appear) | Slip |
-| --- | --- |
-| definitely | definately |
-| separate / separately | seperate / seperately |
-| necessary | neccessary |
-| receive / received | recieve / recieved |
-| believe / believed | beleive / beleived |
-| occurred | occured |
-| weird | wierd |
-| argument | arguement |
-| beginning | begining |
-| tomorrow | tommorrow |
-
-**Do not** swap pronoun homophones (`their`/`there`/`they're`, `your`/`you're`, `its`/`it's`) or ambiguous pairs (`to`/`too`, `affect`/`effect`, `of`/`off`). Dropped-apostrophe already covers `Im` / `dont` / `thats`.
-
-### 5. Deliver
+### 4. Deliver
 
 **Pasted text — four sections:**
 
 1. **Audit** — tells found (quote short spans), must-fix vs judgment-call
-2. **Rewrite** — full cleaned (+ textured) text
+2. **Rewrite** — full cleaned (+ textured if asked) text
 3. **Changes** — brief bullets of what moved and why
-4. **Second pass** — answers to the two audit questions + texture line(s)
+4. **Second pass** — answers to the two audit questions + texture line(s) if texture ran
 
 **In-place file edit:** apply edits, re-read, confirm; summarize changes (no need to dump the whole file).
 
 **File without edit permission:** same four sections as pasted text; leave the file untouched.
 
-On forum/chat: contractions are normal; fragments are OK; don’t sand idiosyncratic caps or existing typos the author already made — preserve those, don’t multiply them beyond the texture recipe.
+Contractions are normal; fragments are OK; don’t sand idiosyncratic caps or existing typos the author already made — preserve those, don’t multiply them beyond the texture recipe.
 
 ## Output habits
 
