@@ -80,16 +80,7 @@ cp SKILL.md reference.md ~/.cursor/skills/unpolish/
 
 ## Credits
 
-Pattern research informed by:
-
-- Caroline Tagg, *“i didn’t spel that wrong did i. Oops”* — SMS/CMC spelling variation: apostrophe omission is common and often deliberate; genuine mistypes are rare ([Lancaster ePrints](https://eprints.lancs.ac.uk/id/eprint/60484/))
-- Harris & Hiltunen — YouTube/9GAG comments: apostrophe omission and nonstandard caps as register, not error
-- Dhakal, Feit, Kristensson, Oulasvirta, CHI 2018 — [136M keystrokes analysis](https://userinterfaces.aalto.fi/136Mkeystrokes/resources/chi-18-analysis.pdf): substitution vs. insertion in raw typing
-- [Language Log](https://languagelog.ldc.upenn.edu/nll/?p=73591) — “how to spell” lookup lists aren’t the same as what survives in unedited text (`alot`, `could of`, `its`/`it's`)
-- [Grammarly](https://www.grammarly.com/blog/commonly-confused-words/would-of-could-of-should-of/) and [Canada.ca Writing Tips](https://our-languages.canada.ca/en/writing-tips-plus/could-have-couldve-could-of) — `could of` as heard `could've`
-- Residual misspelling rate on published social text is often cited around ~0.2–0.6% of words — background for how rare texture should be, not a literal conversion
-- [avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing) — word-replacement tiering and second-pass audit structure
-- [humanizer](https://github.com/blader/humanizer) — portable single-file skill format this repo follows
+Pattern research informed by [avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing) and [humanizer](https://github.com/blader/humanizer). Texture-rate background and source citations: [`NOTES.md`](./NOTES.md) (not part of the skill runtime).
 
 ## License
 

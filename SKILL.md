@@ -14,7 +14,7 @@ license: MIT
 
 You rewrite prose so it no longer reads like a model — or like a model that was “humanized” into fake-casual smoothness. Subtract slop first. On forum/chat/social, add a light texture layer whose expected count is about one mark per 600 words (often zero; no hard cap). Prefer uneven human rhythm over performed mess.
 
-For theme write-ups, texture math, and the QWERTY map, read [reference.md](reference.md) when needed. The replace-with table and lexical-slip table live **here**.
+For theme write-ups, QWERTY neighbors, and checked fixtures, read [reference.md](reference.md) when needed. The replace-with table, lexical-slip table, and hash recipe live **here**.
 
 ## What this is and isn’t
 
@@ -100,19 +100,19 @@ Fix must-fix items. Judgment-calls only when they stack or clash with the chosen
 - Stakes inflation (API tweak framed as civilization-scale)
 - Vague “experts say” / unnamed authorities
 - Magic adverbs papering over a thin claim (see Always-replace below)
-- Parallel rule-of-three — must-fix when three items share the same grammatical skeleton (three short clauses, three VPs, three “It’s X” beats), even if all three facts are real. Fix by subordinating or merging clauses, **not** by chopping a clause into a subjectless fragment. Leave genuine inventories (shopping, ingredients) unless the line is also a three-beat slogan
+- Parallel rule-of-three — must-fix when three items share the same grammatical skeleton (three short clauses, three VPs, three “It’s X” beats), even if all three facts are real. Fix by subordinating or merging clauses, **not** by chopping a clause into a subjectless fragment. Leave bare-noun inventories (shopping, ingredients) unless the line is also a three-beat slogan. Empty significance tails (`that matters`, `that isn't pretending to be X`) are not inventories — cut the tail or name the concrete spec
 - Copula dodge (“serves as”, “stands as”) where “is” works
 - Uniform paragraph / sentence length across the whole piece — also grammar and parallelism so clean it reads scripted in a casual register
 
 #### Bucket C — Machine cadence
 
 - Em-dash habit — always fix, every register, no per-1,000-word allowance
-- Synonym cycling for the same idea
+- Synonym cycling — rotating synonyms to avoid repeating a word (`developers… engineers… practitioners… builders`). Human writers repeat the clearest word; if the same noun or verb appears three times and that's the right word, keep all three
 - Punchy one-line fragment abuse / manufactured punchlines — three or more same-shape beats in a row (standalone micro-sentences, tiny paragraphs, or parallel clauses inside one sentence used for fake breathiness)
-- Caption / diary subject-drop — declarative recap clauses with the implied first-person subject missing (`Made…`, `Fixed…`, `Went…`, `shut the valves, swapped…`), anywhere in an otherwise first-person post. **Opening sentence: always must-fix.** 2+ drops anywhere: must-fix all of them. A drop that is also a triad beat always counts. Single interior drop, not in a triad, opener already fine: judgment-call. Restore the subject once per sentence/clause group; do not re-drop it to make a punchier fragment. Carve-outs: titles, ingredient/step blocks, changelogs, imperative recipe steps
+- Caption / diary subject-drop — declarative recap clauses with the implied first-person subject missing (`Made…`, `Fixed…`, `Went…`, `shut the valves, swapped…`). Opening sentence: always must-fix. 2+ drops: must-fix all. A drop that is also a triad beat always counts. Single interior drop, not in a triad: judgment-call. Restore the subject once per sentence/clause group; do not re-drop it to make a punchier fragment. Carve-outs: titles, ingredient/step blocks, changelogs, imperative recipe steps
 - Signposted wrap-ups and bow-tie closers — “In conclusion…”, “At the end of the day…”, twin-That’s (`That’s it. That’s the soup.`), category stickers (`It’s dinner.`, `That’s Thursday.`), announced closes (`That’s the update/post/method.`). Delete the bow; stop on the last concrete fact. Do not swap one sticker for a shorter one
 
-Details, false-positive notes, and before/after samples: [reference.md](reference.md).
+False-positive notes and theme detail: [reference.md](reference.md).
 
 #### Words and phrases to replace
 
@@ -138,6 +138,7 @@ Three tiers. Match **inflected forms** (quietly → quiet as significance paint;
 | robust (promo / filler) | solid / reliable / holds up |
 | seamless / seamlessly | smooth / without extra steps |
 | nestled | in / near / sits in |
+| lands / landed / land on (metaphor: launch, decide, “it worked”) | came out / arrived / dropped; pick / go with / end up with; worked / stuck — cut empty “glad it landed.” Keep literal aircraft / birds / ground |
 | vibrant (promo) | busy / lively / cut |
 | thriving (promo) | growing / busy / cite a number |
 | showcase / showcasing | show / cut the clause |
@@ -184,7 +185,7 @@ Three tiers. Match **inflected forms** (quietly → quiet as significance paint;
 | facilitate | help / run |
 | enhance | improve / add |
 | navigate (metaphor) | handle / work through |
-| resonate | land with / matter to |
+| resonate | matter to / click with / cut |
 
 ##### Density — only when the piece is soaked (~3%+ of words, or stacked every other sentence)
 
@@ -210,24 +211,30 @@ Fix anything that fails. If the draft is structurally AI end-to-end, prefer a fu
 
 Skip if the user said “no texture.” Otherwise only if register is `forum` / `chat` / `social`, or the user asked to add texture.
 
-**Count (no hard cap):** expected marks **λ ≈ word_count / 600** — a conservative editorial rate, not a direct conversion of published misspelling percentages. Under ~120 words: λ stays near a small floor (~0.05) instead of dropping to zero — always a small chance, never a hard cutoff. Draw count from SHA-256 (recipe in [reference.md](reference.md)). Soft skip is only the Poisson mass at 0.
+**Count (no hard cap):** expected marks **λ ≈ max(0.05, word_count / 600)**. Soft skip is only the Poisson mass at 0. Use **SHA-256 only** (no wall-clock, no djb2). When the user says “reroll” / “vary it,” invent an internal salt (`reroll1`, their phrase, …); otherwise `salt` is empty.
+
+**Hash recipe**
+
+1. **Normalize** the stripped rewrite: lowercase, collapse whitespace runs to a single space, keep the full string → `text`
+2. **Seeds:** `count_seed = "count|" + text + "|" + salt`; per slot `s` (0-based): `slot_seed = "slot|" + str(s) + "|" + text + "|" + salt`
+3. **Digest words:** `digest = SHA-256(UTF-8 bytes of seed)` (32 bytes); `W0…W5` = uint32 big-endian from `digest[0:4]`, `[4:8]`, … `[20:24]`
+4. **Poisson count:** `u = W0_count / 2^32` from `count_seed`; `k` = smallest `m ≥ 0` with `cdf_poisson(m; λ) ≥ u`
+5. For each slot `s` in `0 .. k-1`: hash `slot_seed` → words; `r = W0 % 100` → type band; walk if needed; apply W1–W5 per type. Choose all targets against the immutable pre-texture draft; avoid overlaps; apply high-to-low offset. Report `texture: none` or `texture: <type> @ …`
 
 **Types** — `r = W0 % 100` from the slot digest, then walk bands. If a type can’t apply, try the next band; if none apply → that slot is none.
 
 | `r` | Weight | Type |
 | --- | --- | --- |
 | 0–35 | 36 | Dropped apostrophe (`dont`, `Im`, `thats`) |
-| 36–53 | 18 | Missing end punctuation (last sentence allowed; skip title) |
-| 54–67 | 14 | Uncapitalized sentence start (never standalone `I`; skip title) |
+| 36–53 | 18 | Missing end punctuation (**paragraph-final** only; empty pool → none, no walk) |
+| 54–67 | 14 | Uncapitalized sentence start (never standalone `I`) |
 | 68–79 | 12 | Extra space mid-sentence |
 | 80–93 | 14 | Lexical slip (two-pool table below) |
 | 94–99 | 6 | Keyboard slip (transposition or QWERTY neighbor; see reference) |
 
 Never-touch: names, numbers, quotes, titles, URLs, slur-adjacent.
 
-Choose all targets against the immutable pre-texture draft; avoid duplicate targets; apply edits from highest offset to lowest. Report each: `texture: none` or `texture: <type> @ …`.
-
-Full digest-word layout, Poisson, QWERTY, and fixtures: [reference.md](reference.md).
+QWERTY neighbor map and checked fixtures: [reference.md](reference.md).
 
 #### Lexical slip table
 
