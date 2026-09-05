@@ -177,7 +177,7 @@ Two subtypes (from `W3 % 2`):
 | `W3 % 2` | Subtype | Example |
 | --- | --- | --- |
 | 0 | Adjacent-letter **transposition** | `the`→`teh`, `and`→`adn` |
-| 1 | QWERTY-neighbor **substitution** | `should`→`shoukd` |
+| 1 | QWERTY-neighbor **substitution** (same-row only) | `should`→`shuild` |
 
 Shared picks:
 
@@ -187,36 +187,36 @@ Shared picks:
 
 For transposition: swap the chosen interior letter with the next letter (if at last interior, swap with previous).
 
-For substitution: replace the chosen letter with a QWERTY neighbor from the map; neighbor index = `W5 % neighbor_count`.
+For substitution: replace the chosen letter with a **same-row horizontal** QWERTY neighbor from the map; neighbor index = `W5 % neighbor_count`.
 
-| Key | Neighbors (use one) |
+| Key | Neighbors (left/right only) |
 | --- | --- |
-| a | s q w |
-| b | v g h n |
-| c | x d f v |
-| d | s e r f c x |
-| e | w r d s |
-| f | d r t g v c |
-| g | f t y h b v |
-| h | g y u j n b |
-| i | u o k j |
-| j | h u i k n m |
-| k | j i o l m |
-| l | k o p |
-| m | n j k |
-| n | b h j m |
-| o | i p l k |
-| p | o l |
-| q | w a |
-| r | e t f d |
-| s | a w e d z x |
-| t | r y g f |
-| u | y i j h |
-| v | c f g b |
-| w | q e a s |
-| x | z s d c |
-| y | t u h g |
-| z | a s x |
+| a | s |
+| b | v n |
+| c | x v |
+| d | s f |
+| e | w r |
+| f | d g |
+| g | f h |
+| h | g j |
+| i | u o |
+| j | h k |
+| k | j l |
+| l | k |
+| m | n |
+| n | b m |
+| o | i p |
+| p | o |
+| q | w |
+| r | e t |
+| s | a d |
+| t | r y |
+| u | y i |
+| v | c b |
+| w | q e |
+| x | z c |
+| y | t u |
+| z | x |
 
 ### Collision handling
 
