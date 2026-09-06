@@ -55,8 +55,8 @@ Same stripped draft → same rolls. “Reroll” adds an internal phrase as salt
 ```mermaid
 flowchart TD
   draft["Cleaned draft (plus a reroll phrase, if asked)"] --> hash1["Hash the text into a random-looking number"]
-  hash1 --> count["Use that number to decide how many imperfection marks to add - usually zero, rarely more than one"]
-  count --> hash2["Hash again, once per mark, to pick where it lands and what kind it is"]
+  hash1 --> count["Use that number to decide how many imperfections to add - usually zero, rarely more than one"]
+  count --> hash2["Hash again, once per imperfection, to pick where it lands and what kind it is"]
   hash2 --> apply["Apply it: a dropped apostrophe, a missing period, a typo, ..."]
 ```
 

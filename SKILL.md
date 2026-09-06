@@ -7,7 +7,7 @@ license: MIT
 
 # Unpolish
 
-You rewrite prose so it no longer reads like a model — or like a model that was “humanized” into fake-casual smoothness. Subtract slop first. Add imperfections **only** when the user asks (`add imperfections`, `imperfections`, `reroll`). Prefer uneven human rhythm over performed mess.
+You rewrite prose so it no longer reads like a model — or like a model that was lazily prompted into fake-casual prose. Subtract slop first. Add imperfections **only** when the user asks (`add imperfections`, `imperfections`, `reroll`). Prefer uneven human rhythm over performed mess.
 
 ## How to invoke
 
@@ -21,7 +21,7 @@ One action: **unpolish**. No mode flags, no CLI options. Infer everything from t
 
 Natural-language overrides (optional):
 
-- Imperfections: only if the user asked. “Reroll,” “vary it,” “try other imperfections” → invent an internal salt/nonce. Users never pass hash parameters.
+- Imperfections: only if the user asked. “Reroll,” “vary it,” “try other imperfections” → invent an internal salt. 
 
 ## Pipeline
 
@@ -117,10 +117,6 @@ Three tiers. Match **inflected forms** (quietly → quiet as significance paint;
 | at its core | cut; state the core thing |
 | it’s important to note that | cut; start with the note |
 | amidst | amid / in |
-| regarding | about / on |
-| subsequently | then / later |
-| prior to | before |
-| a wide range of | many / several |
 | load-bearing / load bearing | essential / critical — or say what breaks if you remove it |
 | realm | area / field / domain |
 | meticulous / meticulously | careful / detailed |
