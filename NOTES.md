@@ -2,9 +2,9 @@
 
 Background for humans. **Do not load this file when running unpolish.** Install copies only `SKILL.md` and `references/`.
 
-## AI writing tells 
+## AI writing tells
 
-Most of the AI writing tells covered in the skill are already covered by at least one other popular agent skill. However, some tells are new/unique to this repo at the time of writing:
+Most of the AI writing tells covered in the skill are already covered by at least one other popular agent skill (e.g. avoid-ai-writing, humanizer). However, some tells are new/unique to this repo at the time of writing:
 
 ### Metaphorical land / landed
 
@@ -18,8 +18,7 @@ Verbless slogan lines (“Less busywork. More impact.”) are a common AI-copy t
 
 - Andy Chadwick, [LinkedIn](https://www.linkedin.com/posts/andy-chadwick_one-thing-im-getting-increasingly-sick-of-activity-7491523021518753792-7pnX/)
 
-
------
+---
 
 ## Imperfections
 
