@@ -7,7 +7,7 @@ license: MIT
 
 # Unpolish
 
-You rewrite prose so it no longer reads like a model — or like a model that was “humanized” into fake-casual smoothness. Subtract slop first. Add imperfections **only** when the user asks (`add imperfections`, `imperfections`, `reroll`, `make it look posted` / typed). Prefer uneven human rhythm over performed mess.
+You rewrite prose so it no longer reads like a model — or like a model that was “humanized” into fake-casual smoothness. Subtract slop first. Add imperfections **only** when the user asks (`add imperfections`, `imperfections`, `reroll`). Prefer uneven human rhythm over performed mess.
 
 ## How to invoke
 

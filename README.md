@@ -18,7 +18,7 @@ Say **unpolish**. No flags.
 | “Edit `draft.md` in place” | Edits that prose file; leaves code, tables, quotes alone |
 | Name a file without asking to edit | Proposes a rewrite; does not touch the file |
 
-Overrides, in plain language: “add imperfections,” “reroll,” “make it look posted.”
+Overrides, in plain language: “add imperfections,” “reroll.”
 
 ## Quick demo
 
