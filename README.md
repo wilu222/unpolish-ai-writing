@@ -1,24 +1,34 @@
 # unpolish-ai-writing
 
-Strip machine polish from prose. One action: **unpolish**. Add sparse hash-drawn imperfections **only when asked**. Not a detector bypass or a typo factory.
+Removes signs of AI-generated writing from text, and **optionally** adds sparse typing errors informed by researched human error patterns.
 
-```
-draft → strip slop → second-pass audit → imperfections (if asked) → deliver
-```
-
-Imperfections expected rate (when on): **λ ≈ words / 600** (floor 0.05). Often zero. No hard cap.
+One action: **unpolish**. Typing errors stay off unless you ask (“add imperfections”).
 
 ## Usage
 
-Say **unpolish**. No flags.
+Invoke the skill however your agent harness exposes installed skills. Common forms include a slash command or a direct request:
 
-| You | It |
-| --- | --- |
-| Paste a draft | Returns four sections: audit, rewrite, changes, second pass |
-| “Edit `draft.md` in place” | Edits that prose file; leaves code, tables, quotes alone |
-| Name a file without asking to edit | Proposes a rewrite; does not touch the file |
+```
+/unpolish-ai-writing
 
-Overrides, in plain language: “add imperfections,” “reroll.”
+[paste your text here]
+```
+
+```
+Please unpolish this text: [your text]
+```
+
+Point it at a file and the skill rewrites it in place:
+
+```
+Unpolish the prose in docs/launch-post.md
+```
+
+To add typing errors:
+
+```
+Unpolish this and add imperfections: [your text]
+```
 
 ## Quick demo
 
@@ -32,7 +42,7 @@ Overrides, in plain language: “add imperfections,” “reroll.”
 >
 > Now she's telling mutual friends that I ambushed her and that I'm being controlling about a few dirty dishes. In conclusion, I don't think I'm the one being unreasonable here, but I wanted outside perspective. AITA?
 
-**Output** (strip only — no imperfections asked):
+**Output** (strip only — no typing errors asked):
 
 > My roommate and I have lived together for two years, and lately we keep fighting about chores: dishes, trash, keeping the shared spaces basically clean.
 >
@@ -44,13 +54,13 @@ Overrides, in plain language: “add imperfections,” “reroll.”
 
 **What it caught:** reasoning leak (“I want to lay out the full situation before asking for judgment”), a stacked Not-X-it’s-Y negation (“It’s not really about the dishes, it’s about respect, and it’s not really about respect either…”), an em dash, magic adverbs (“genuinely,” “quietly”), vague attribution (“roommate experts generally agree”), copula dodge (“serves as”), two signposted wrap-ups (“At the end of the day,” “In conclusion”), and a filler transition (“Moreover”). 8 tells across all three buckets.
 
-**Imperfections:** off unless the user asks. Say “add imperfections” / “reroll” to run the hash recipe in [`references/imperfections.md`](./references/imperfections.md).
+**Typing errors:** off unless you ask. Say “add imperfections” or “reroll.” The recipe is in [`references/imperfections.md`](./references/imperfections.md).
 
 Strip rules and word tables: [`SKILL.md`](./SKILL.md).
 
-## Imperfections hash
+## Optional typing errors
 
-Same stripped draft → same rolls. “Reroll” adds an internal phrase as salt. Agents never take hash parameters from the user.
+Same cleaned input always gets the same typos. “Reroll” changes the seed so you get a different set. About one slip per 600 words, and often none.
 
 ```mermaid
 flowchart TD
@@ -62,27 +72,27 @@ flowchart TD
 
 Count examples: ~20 words → almost always 0; ~600 words → mix of 0/1/2; ~1000 words → commonly 1–2.
 
-Checked fixtures: [`references/imperfections.md`](./references/imperfections.md).
+Details and checked examples: [`references/imperfections.md`](./references/imperfections.md).
 
 ## Install
 
-Open this repo in Claude Code or Cursor. The skill is [`SKILL.md`](./SKILL.md) plus [`references/`](./references/) (imperfections recipe, loaded only when asked).
+Open this repo in Claude Code or Cursor. The skill is [`SKILL.md`](./SKILL.md) plus [`references/`](./references/) (typing-error recipe, loaded only when asked).
 
 ```bash
 # Claude Code
-mkdir -p ~/.claude/skills/unpolish/references
-cp SKILL.md ~/.claude/skills/unpolish/
-cp -R references ~/.claude/skills/unpolish/
+mkdir -p ~/.claude/skills/unpolish-ai-writing/references
+cp SKILL.md ~/.claude/skills/unpolish-ai-writing/
+cp -R references ~/.claude/skills/unpolish-ai-writing/
 
 # Cursor
-mkdir -p ~/.cursor/skills/unpolish/references
-cp SKILL.md ~/.cursor/skills/unpolish/
-cp -R references ~/.cursor/skills/unpolish/
+mkdir -p ~/.cursor/skills/unpolish-ai-writing/references
+cp SKILL.md ~/.cursor/skills/unpolish-ai-writing/
+cp -R references ~/.cursor/skills/unpolish-ai-writing/
 ```
 
 ## Credits
 
-Pattern research informed by [avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing) and [humanizer](https://github.com/blader/humanizer). Imperfection-rate background and source citations: [`NOTES.md`](./NOTES.md) (not part of the skill runtime).
+Pattern research informed by [avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing) and [humanizer](https://github.com/blader/humanizer). Sources for a few extra tells and the typing-error rate: [`NOTES.md`](./NOTES.md) (not loaded at runtime).
 
 ## License
 
