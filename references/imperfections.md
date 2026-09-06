@@ -27,7 +27,7 @@ flowchart TD
   slotHash --> typeRoll["W0: imperfection type"]
   slotHash --> locationRoll["W1: sentence or region"]
   slotHash --> candidateRoll["W2: eligible candidate"]
-  slotHash --> subtypeRoll["W3: lexical pool or keyboard subtype"]
+  slotHash --> subtypeRoll["W3: wrong-word pool or keyboard subtype"]
   slotHash --> mutationRoll["W4 W5: character and neighbor"]
 ```
 
@@ -37,33 +37,34 @@ flowchart TD
 
 | `r` | Weight | Type | How to apply |
 | --- | --- | --- | --- |
-| 0–35 | 36 | Dropped apostrophe | `W1` → sentence; `W2` → eligible contraction (`don't`→`dont`, `I'm`→`Im`, `that's`→`thats`). Prefer these over ambiguous `it's`→`its`. |
-| 36–53 | 18 | Missing end punctuation | Eligible = paragraph-final sentences ending in `.` or `?`. `W1 %` over that pool; remove the mark. Empty (or all claimed) → `imperfection: none` — **do not walk**. |
-| 54–67 | 14 | Uncapitalized sentence start | `W1` → eligible sentence; lowercase first letter (never standalone `I`). |
-| 68–79 | 12 | Extra space | `W1` → sentence; `W2` → which single space becomes two (`I  think`). |
-| 80–93 | 14 | Lexical slip | Two pools below; `W3 % 10` and `W2`. |
-| 94–99 | 6 | Keyboard slip | `W3` picks subtype; `W2`/`W4`/`W5` pick word/char/neighbor. |
+| 0–27 | 28 | Misspelling / wrong word | Two pools below; `W3 % 10` and `W2`. Report id: `wrong_word`. |
+| 28–51 | 24 | Dropped apostrophe | `W1` → sentence; `W2` → eligible contraction (`don't`→`dont`, `I'm`→`Im`, `that's`→`thats`). Prefer these over ambiguous `it's`→`its`. |
+| 52–69 | 18 | Missing end punctuation | Eligible = paragraph-final sentences ending in `.` or `?`. `W1 %` over that pool; remove the mark. Empty (or all claimed) → `imperfection: none` — **do not walk**. |
+| 70–83 | 14 | Uncapitalized sentence start | `W1` → eligible sentence; lowercase first letter (never standalone `I`). |
+| 84–95 | 12 | Extra space | `W1` → sentence; `W2` → which single space becomes two (`I  think`). |
+| 96–99 | 4 | Keyboard slip | `W3` picks subtype; `W2`/`W4`/`W5` pick word/char/neighbor. |
 
 Word use by type:
 
 | Type | W0 | W1 | W2 | W3 | W4 / W5 |
 | --- | --- | --- | --- | --- | --- |
+| Misspelling / wrong word | type band | (optional region) | pool index | pool prefer `W3%10` | — |
 | Dropped apostrophe | type band | sentence | contraction | — | — |
 | Missing punctuation | type band | paragraph-final index | — | — | — |
 | Lowercase start | type band | sentence | — | — | — |
 | Extra space | type band | sentence | which space | — | — |
-| Lexical slip | type band | (optional region) | pool index | pool prefer `W3%10` | — |
 | Keyboard slip | type band | sentence | word | subtype `W3%2` | char / neighbor |
 
-## Lexical slip — two pools
+## Misspelling / wrong word — two pools
 
 Do **not** invent a misspelling of a word that isn’t in the draft. Scan into two pools, then:
 
 1. `p = W3 % 10` — if `p == 0` (~10%) prefer **Pool B**; else prefer **Pool A**
 2. If Pool A is preferred and empty → walk to the next imperfection type (**do not** fall back to Pool B). If Pool B is preferred and empty → may fall back to Pool A; if that is also empty → walk bands
-3. `idx = W2 % pool.length` — one canonical form only
+3. `idx = W2 % pool.length` — one canonical form only (one row per source type that appears; do **not** give each occurrence of `to` its own vote)
+4. Apply that slip once (first occurrence in the chosen region)
 
-**Pool A — context / word-boundary slips (default)**
+**Pool A — wrong word / mix-up** (`W3 % 10 ≠ 0`, ~90%)
 
 | Source (must already appear) | Slip |
 | --- | --- |
@@ -78,8 +79,21 @@ Do **not** invent a misspelling of a word that isn’t in the draft. Scan into t
 | lose (verb: fail to keep / be defeated) | loose |
 | losing (same meaning) | loosing |
 | than (comparison only: bigger than, rather than) | then |
+| their | there |
+| there | their |
+| they're | their |
+| your | you're |
+| you're | your |
+| its | it's |
+| it's | its |
+| to | too |
+| too | to |
+| affect | effect |
+| effect | affect |
+| of | off |
+| off | of |
 
-**Pool B — conventional nonword misspellings (rare: ~10% prefer)**
+**Pool B — conventional nonword misspellings** (`W3 % 10 == 0`, ~10%)
 
 | Source (must already appear) | Slip |
 | --- | --- |
@@ -94,7 +108,7 @@ Do **not** invent a misspelling of a word that isn’t in the draft. Scan into t
 | beginning | begining |
 | tomorrow | tommorrow |
 
-**Do not** swap pronoun homophones (`their`/`there`/`they're`, `your`/`you're`, `its`/`it's`) or ambiguous pairs (`to`/`too`, `affect`/`effect`, `of`/`off`). Dropped-apostrophe already covers `Im` / `dont` / `thats`.
+Dropped-apostrophe already covers `Im` / `dont` / `thats` (prefer those contractions over wrong-word `it's`↔`its` when both could apply).
 
 ## Sentence pick
 
@@ -175,13 +189,13 @@ UTF-8 SHA-256, big-endian words. Recompute to verify.
 - digest prefix `a5472dc4…` → `W0 = 2772905412` → `u ≈ 0.64562`
 - At λ = 1.0 → **k = 1**. At λ = 1.67 → **k = 2**.
 
-**Fixture 3 — lexical context pool**
+**Fixture 3 — type band + Pool A prefer words (same seed; band label updated)**
 
 - `slot_seed` = `slot|1|i definitely could have handled that argument better than i did|`
-- digest prefix `b28e8162…` → `W0 % 100 = 82` → lexical band (80–93)
-- `W3 % 10 = 3` → prefer **Pool A**. If Pool A empty, walk — do **not** fall back to Pool B.
+- digest prefix `b28e8162…` → `W0 % 100 = 82` → uncapitalized-start band (70–83)
+- `W3 % 10 = 3` → prefer **Pool A** when the type is wrong_word. If Pool A empty, walk — do **not** fall back to Pool B.
 
-**Fixture 4 — type band check (extra space)**
+**Fixture 4 — type band check (same seed; band label updated)**
 
 - `slot_seed` = `slot|0|fixture a short forum draft about a roommate and dishes|`
-- digest prefix `2b20b7b6…` → `W0 % 100 = 70` → extra-space band (68–79)
+- digest prefix `2b20b7b6…` → `W0 % 100 = 70` → uncapitalized-start band (70–83)

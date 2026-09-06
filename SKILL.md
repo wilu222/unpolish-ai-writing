@@ -170,7 +170,7 @@ Fix anything that fails. If the draft is structurally AI end-to-end, prefer a fu
 
 ### 3. Imperfections pass
 
-**Skip unless the user asked for imperfections.** When they did, read [references/imperfections.md](references/imperfections.md) and apply it: λ ≈ max(0.05, word_count / 600), SHA-256 recipe, type bands, lexical pools, QWERTY. Soft skip is only Poisson P(k=0). Report `imperfection: none` or `imperfection: <type> @ …`.
+**Skip unless the user asked for imperfections.** When they did, read [references/imperfections.md](references/imperfections.md) and apply it: λ ≈ max(0.05, word_count / 600), SHA-256 recipe, type bands, misspelling / wrong-word pools, QWERTY. Soft skip is only Poisson P(k=0). Report `imperfection: none` or `imperfection: <type> @ …` (`wrong_word` for misspelling / wrong word).
 
 ### 4. Deliver
 

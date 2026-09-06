@@ -31,6 +31,6 @@ Informal “mistake” counts mix slang, style, and grammar. Older published-soc
 
 ### Dropped apostrophes vs wrong-key typos
 
-A 2012 UK **SMS** corpus (not published posts) found people often left out apostrophes (`dont`, `im`) and rarely hit the wrong key. Directional only: dropped apostrophe is the heaviest type, keyboard slip the lightest. SMS is a different register, and we do not take their mix as weights.
+A 2012 UK **SMS** corpus (not published posts) found people often left out apostrophes (`dont`, `im`) and rarely hit the wrong key. Directional only for the apostrophe vs key-hit contrast. In the skill weights, misspelling / wrong word is the heaviest type (those survive autocorrect); keyboard slip is the lightest on purpose (autocorrect). SMS is a different register, and we do not take their mix as weights.
 
 - Tagg, Baron & Rayson, *[“i didn’t spel that wrong did i. Oops”](https://eprints.lancs.ac.uk/id/eprint/60484/)*
