@@ -1,27 +1,21 @@
 # unpolish-ai-writing
 
-Removes signs of AI-generated writing from text, and **optionally** adds sparse typing errors informed by researched human error patterns.
+Removes signs of AI-generated writing from text using up to two methods:
 
+- Detect, remove, and replace common signs of AI writing 
+- Optionally adds sparse typing errors informed by researched human error patterns.
 
 ## How it works
 
-Step 1: AI detection & cleanup
+Step 1 (Default): AI detection & cleanup
 
 - Detect common AI writing patterns as documented by ["Signs of AI writing"](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) as well as tropes.fyi and other sources (view NOTES.md for more info)
 
-
 Step 2 (Optional): introduce human-like writing errors
 
-- The size of the text determines the average number of expected imperfections (via a Poisson distrubtion). The typo/imperfection rate is estimated based on logged human text output.
-
-- The SHA-256 hash of the text simulates an individual trial given the distribution. 
-
-- If the trial returns an imperfection count of at least 1, salt to re-roll a second SHA-256 hash output.
-
-- The second output is used for a weighted cumulative distribution function to return an imperfection type (missing punctuation, misspelling, etc), subtype, and the placement of the imperfection within the text.
-
-
-
+- The size of the text determines the average number of expected imperfections (via a Poisson distribution). 
+- The SHA-256 hash of a seed built from the text simulates an individual trial given the distribution. 
+- If the trial returns a non-zero imperfection count, hash again with a different seed to determine the imperfection type (missing punctuation, misspelling, etc) and the placement of the imperfection within the text.
 
 
 
@@ -51,6 +45,8 @@ To add typing errors:
 Unpolish this and add imperfections: [your text]
 ```
 
+
+
 ## Quick demo
 
 **Input:**
@@ -75,9 +71,9 @@ Unpolish this and add imperfections: [your text]
 
 **What it caught:** reasoning leak (“I want to lay out the full situation before asking for judgment”), a stacked Not-X-it’s-Y negation (“It’s not really about the dishes, it’s about respect, and it’s not really about respect either…”), an em dash, magic adverbs (“genuinely,” “quietly”), vague attribution (“roommate experts generally agree”), copula dodge (“serves as”), two signposted wrap-ups (“At the end of the day,” “In conclusion”), and a filler transition (“Moreover”). 8 tells across all three buckets.
 
-**Typing errors:** off unless you ask. Say “add imperfections” or “reroll.” The recipe is in [`references/imperfections.md`](./references/imperfections.md).
+**Typing errors:** off unless you ask. Say “add imperfections” or “reroll.” The recipe is in `[references/imperfections.md](./references/imperfections.md)`.
 
-Strip rules and word tables: [`SKILL.md`](./SKILL.md).
+Strip rules and word tables: `[SKILL.md](./SKILL.md)`.
 
 ## Optional typing errors
 
@@ -87,17 +83,19 @@ Same cleaned input always gets the same typos. “Reroll” changes the seed so 
 flowchart TD
   draft["Cleaned draft (plus a reroll phrase, if asked)"] --> hash1["Hash the text into a random-looking number"]
   hash1 --> count["Use that number to decide how many imperfections to add - usually zero, rarely more than one"]
-  count --> hash2["Hash again, once per imperfection, to pick where it lands and what kind it is"]
+  count --> hash2["Hash again, once per imperfection, to decide its type & location"]
   hash2 --> apply["Apply it: a dropped apostrophe, a missing period, a typo, ..."]
 ```
 
+
+
 Count examples: ~20 words → almost always 0; ~600 words → mix of 0/1/2; ~1000 words → commonly 1–2.
 
-Details and checked examples: [`references/imperfections.md`](./references/imperfections.md).
+Details and checked examples: `[references/imperfections.md](./references/imperfections.md)`.
 
 ## Install
 
-Open this repo in Claude Code or Cursor. The skill is [`SKILL.md`](./SKILL.md) plus [`references/`](./references/) (typing-error recipe, loaded only when asked).
+Open this repo in Claude Code or Cursor. The skill is `[SKILL.md](./SKILL.md)` plus `[references/](./references/)` (typing-error recipe, loaded only when asked).
 
 ```bash
 # Claude Code
@@ -111,9 +109,11 @@ cp SKILL.md ~/.cursor/skills/unpolish-ai-writing/
 cp -R references ~/.cursor/skills/unpolish-ai-writing/
 ```
 
+
+
 ## Credits
 
-Pattern research informed by [avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing) and [humanizer](https://github.com/blader/humanizer). Sources for a few extra tells and the typing-error rate: [`NOTES.md`](./NOTES.md) (not loaded at runtime).
+Pattern research informed by [avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing) and [humanizer](https://github.com/blader/humanizer). Sources for a few extra tells and the typing-error rate: `[NOTES.md](./NOTES.md)`.
 
 ## License
 
