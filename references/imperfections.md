@@ -15,20 +15,20 @@ Never-touch: names, numbers, quotes, titles, URLs, slur-adjacent.
 ```mermaid
 flowchart TD
   draft[Stripped draft] --> normalize[Normalize full text]
-  salt[Optional internal salt] --> countSeed
-  normalize --> countSeed["Seed: count pipe text pipe salt"]
-  countSeed --> countHash[SHA-256]
-  countHash --> countRoll["W0 / 2^32"]
-  countRoll --> poisson["Poisson count lambda = max(0.05, words / 600)"]
+  salt[Optional salt: reroll tag only]
+  normalize --> countSeed[How-many seed: text plus salt]
+  salt --> countSeed
+  countSeed --> countHash[Count SHA-256]
+  countHash --> countRoll["u = W0 / 2^32"]
+  countRoll --> poisson[Poisson lambda from word count]
   poisson --> slots[Create k slots]
-  normalize --> slotSeed["Seed: slot pipe index pipe text pipe salt"]
-  slots --> slotSeed
-  slotSeed --> slotHash[SHA-256]
-  slotHash --> typeRoll["W0: imperfection type"]
-  slotHash --> locationRoll["W1: sentence or region"]
-  slotHash --> candidateRoll["W2: eligible candidate"]
-  slotHash --> subtypeRoll["W3: wrong-word pool or keyboard subtype"]
-  slotHash --> mutationRoll["W4 W5: character and neighbor"]
+  slots --> slotSeed[Type/place seed: different salt so this hash is not a copy]
+  slotSeed --> slotHash[Type SHA-256]
+  slotHash --> typeRoll[W0: imperfection type]
+  slotHash --> locationRoll[W1: sentence or region]
+  slotHash --> candidateRoll[W2: eligible candidate]
+  slotHash --> subtypeRoll[W3: wrong-word pool or keyboard subtype]
+  slotHash --> mutationRoll[W4 W5: character and neighbor]
 ```
 
 ## Types (weighted CDF)

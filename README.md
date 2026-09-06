@@ -2,7 +2,28 @@
 
 Removes signs of AI-generated writing from text, and **optionally** adds sparse typing errors informed by researched human error patterns.
 
-One action: **unpolish**. Typing errors stay off unless you ask (“add imperfections”).
+
+## How it works
+
+Step 1: AI detection & cleanup
+
+- Detect common AI writing patterns as documented by ["Signs of AI writing"](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) as well as tropes.fyi and other sources (view NOTES.md for more info)
+
+
+Step 2 (Optional): introduce human-like writing errors
+
+- The size of the text determines the average number of expected imperfections (via a Poisson distrubtion). The typo/imperfection rate is estimated based on logged human text output.
+
+- The SHA-256 hash of the text simulates an individual trial given the distribution. 
+
+- If the trial returns an imperfection count of at least 1, salt to re-roll a second SHA-256 hash output.
+
+- The second output is used for a weighted cumulative distribution function to return an imperfection type (missing punctuation, misspelling, etc), subtype, and the placement of the imperfection within the text.
+
+
+
+
+
 
 ## Usage
 

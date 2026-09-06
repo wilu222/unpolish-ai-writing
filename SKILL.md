@@ -1,47 +1,57 @@
 ---
 name: unpolish-ai-writing
 description: >-
-  Agent skill that removes signs of AI-generated writing from text, and optionally adds sparse typing errors informed by researched human error patterns.
+  Agent skill that removes signs of AI-generated writing, and/or adds sparse typing
+  errors (imperfections) informed by researched human error patterns. Use for deslop/strip only, imperfections only, or both.
 license: MIT
 ---
 
 # Unpolish
 
-You rewrite prose so it no longer reads like a model — or like a model that was lazily prompted into fake-casual prose. Subtract slop first. Add imperfections **only** when the user asks (`add imperfections`, `imperfections`, `reroll`). Prefer uneven human rhythm over performed mess.
+Two functions: **deslop** (strip AI writing tells) and **imperfections** (sparse hash-drawn typing errors). Default is deslop only. Add imperfections when the user asks. **Imperfections only** skips deslop entirely — draw on the text as given. 
 
 ## How to invoke
 
-One action: **unpolish**. No mode flags, no CLI options. Infer everything from the request:
+Infer which passes to run from the request. 
+
+| User says | Run |
+| --- | --- |
+| `unpolish` / `deslop` /  no extra ask | Strip + second-pass audit. Skip imperfections. |
+| `unpolish and add imperfections` / `deslop + imperfections` | Strip, audit, then hash-draw on the **stripped** draft. |
+| `imperfections only` / `just add imperfections` / `don't strip` / `skip deslop` | Hash-draw on the **text as given**. No strip, no second-pass audit. |
+
+`reroll` / `vary it` / `try other imperfections` → invent an internal salt on the imperfections pass. Does not turn strip back on.
 
 | User gives | You do |
 | --- | --- |
-| Pasted text | Return the unpolished text plus compact audit / change notes |
+| Pasted text | Return the result plus compact audit / change notes (see Deliver) |
 | A prose file + explicit in-place ask (“edit / fix this file”) | Edit in place, verify, summarize. Refuse source code, config, and data files |
 | A file named without edit permission | Read / audit and return a proposed rewrite; do **not** mutate the file |
-
-Natural-language overrides (optional):
-
-- Imperfections: only if the user asked. “Reroll,” “vary it,” “try other imperfections” → invent an internal salt. 
 
 ## Pipeline
 
 ```
 Unpolish progress:
-- [ ] 1. Strip pass
-- [ ] 2. Second-pass audit
-- [ ] 3. Imperfections (only if user asked)
+- [ ] 1. Strip pass          (skip if imperfections-only)
+- [ ] 2. Second-pass audit   (skip if imperfections-only)
+- [ ] 3. Imperfections       (skip unless asked)
 - [ ] 4. Deliver
 ```
 
 ```mermaid
 flowchart TD
-  input[Draft text] --> strip[Strip machine slop]
+  input[Draft text] --> route{Which passes?}
+  route -->|deslop or both| strip[Strip AI writing signs]
   strip --> audit[Second-pass audit]
-  audit --> imperfections[Imperfections if user asked]
-  imperfections --> out[Unpolished draft]
+  audit --> bothCheck{Imperfections asked?}
+  bothCheck -->|yes| imperfBoth[Imperfections on stripped draft]
+  bothCheck -->|no| outDeslop[Deslopped draft]
+  route -->|imperfections only| imperfOnly[Imperfections on text as given]
 ```
 
 ### 1. Strip pass
+
+**Skip if the user asked for imperfections only.**
 
 Scan for the three buckets below. **Cluster > single hit** — one formal sentence is not a rewrite warrant; a pile of tells is.
 
@@ -161,6 +171,8 @@ Three tiers. Match **inflected forms** (quietly → quiet as significance paint;
 
 ### 2. Second-pass audit
 
+**Skip if the user asked for imperfections only.**
+
 After the strip rewrite, answer both out loud (briefly):
 
 1. **What still reads as a model?** (smoothness, pivots, assistant tone, fake depth)
@@ -172,16 +184,22 @@ Fix anything that fails. If the draft is structurally AI end-to-end, prefer a fu
 
 **Skip unless the user asked for imperfections.** When they did, read [references/imperfections.md](references/imperfections.md) and apply it: λ ≈ max(0.05, word_count / 600), SHA-256 recipe, type bands, misspelling / wrong-word pools, QWERTY. Soft skip is only Poisson P(k=0). Report `imperfection: none` or `imperfection: <type> @ …` (`wrong_word` for misspelling / wrong word).
 
+If the user skipped deslop (imperfections only), the recipe’s `text` is the **original paste/file**, not a strip rewrite. After deslop + imperfections, hash the stripped draft.
+
 ### 4. Deliver
 
-**Pasted text — three sections:**
+**Deslop (with or without imperfections) — three sections:**
 
 1. **Audit** — tells found (quote short spans), must-fix vs judgment-call
 2. **Rewrite** — full cleaned (+ imperfections if asked) text
 3. **Changes** — brief bullets of what moved and why
 
+**Imperfections only — two sections:**
+
+1. **Rewrite** — text after the hash draw (no tell Audit)
+2. **Changes** — the `imperfection:` line(s) only
+
 ## Output habits
 
 - Be concise between sections; put energy into the rewrite.
 - Quote the tell, don’t paraphrase it into oblivion.
-- If the user only wanted imperfections, still strip must-fix assistant residue first.
