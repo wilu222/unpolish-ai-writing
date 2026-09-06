@@ -16,6 +16,9 @@ Verbless slogan lines (“Less busywork. More impact.”) are a common AI-copy t
 
 - Andy Chadwick, [LinkedIn](https://www.linkedin.com/posts/andy-chadwick_one-thing-im-getting-increasingly-sick-of-activity-7491523021518753792-7pnX/)
 
+
+-----
+
 ## Imperfections
 
 ### Why they are sparse
@@ -25,8 +28,8 @@ Informal “mistake” counts mix slang, style, and grammar. Older published-soc
 - Brandwatch / mycleveragency (2013), via [PCMag](https://www.pcmag.com/news/infographic-twitter-named-most-illiterate-social-network)
 - Baeza-Yates & Rello, [ICWSM 2011](https://doi.org/10.1609/icwsm.v5i4.14085)
 
-### Apostrophes vs mistypes
+### Dropped apostrophes vs wrong-key typos
 
-A 2012 UK **SMS** corpus (not published posts) found dropped apostrophes common among spelling variants and coded mistypes uncommon. Directional only: dropped apostrophe is the heaviest type, keyboard slip the lightest. SMS is a different register, and we do not take their category mix as weights.
+A 2012 UK **SMS** corpus (not published posts) found people often left out apostrophes (`dont`, `im`) and rarely hit the wrong key. Directional only: dropped apostrophe is the heaviest type, keyboard slip the lightest. SMS is a different register, and we do not take their mix as weights.
 
 - Tagg, Baron & Rayson, *[“i didn’t spel that wrong did i. Oops”](https://eprints.lancs.ac.uk/id/eprint/60484/)*
