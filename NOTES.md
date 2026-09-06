@@ -2,7 +2,7 @@
 
 Background for humans. **Do not load this file when running unpolish.** Install copies only `SKILL.md` and `references/`.
 
-## AI writing tells
+## AI writing tells (not commonly used in similar skills)
 
 ### Metaphorical land / landed
 
