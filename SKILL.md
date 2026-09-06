@@ -174,7 +174,7 @@ Fix anything that fails. If the draft is structurally AI end-to-end, prefer a fu
 
 ### 4. Deliver
 
-**Pasted text — four sections:**
+**Pasted text — three sections:**
 
 1. **Audit** — tells found (quote short spans), must-fix vs judgment-call
 2. **Rewrite** — full cleaned (+ imperfections if asked) text
