@@ -2,7 +2,9 @@
 
 Background for humans. **Do not load this file when running unpolish.** Install copies only `SKILL.md` and `references/`.
 
-## AI writing tells (not commonly used in similar skills)
+## AI writing tells 
+
+Most of the AI writing tells covered in the skill are already covered by at least one other popular agent skill. However, some tells are new/unique to this repo at the time of writing:
 
 ### Metaphorical land / landed
 

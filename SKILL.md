@@ -179,13 +179,6 @@ Fix anything that fails. If the draft is structurally AI end-to-end, prefer a fu
 1. **Audit** — tells found (quote short spans), must-fix vs judgment-call
 2. **Rewrite** — full cleaned (+ imperfections if asked) text
 3. **Changes** — brief bullets of what moved and why
-4. **Second pass** — answers to the two audit questions + imperfection line(s) if imperfections ran
-
-**In-place file edit:** apply edits, re-read, confirm; summarize changes (no need to dump the whole file).
-
-**File without edit permission:** same four sections as pasted text; leave the file untouched.
-
-Contractions are normal; fragments are OK; don’t sand idiosyncratic caps or existing typos the author already made — preserve those, don’t multiply them beyond the imperfections recipe.
 
 ## Output habits
 
