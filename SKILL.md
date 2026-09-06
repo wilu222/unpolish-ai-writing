@@ -1,17 +1,13 @@
 ---
-name: unpolish
+name: unpolish-ai-writing
 description: >-
-  Strip machine polish from prose. Use when text sounds like AI or a humanizer,
-  needs cleanup, or the user says "unpolish," "too polished," "remove AI slop,"
-  or "make this sound posted." One action: unpolish. Sparse hash-drawn texture
-  only when the user asks for it (~1 mark per 600 words). Not for detector
-  evasion or typo spam.
+  Agent skill that removes signs of AI-generated writing from text, and optionally adds sparse typing errors informed by researched human error patterns.
 license: MIT
 ---
 
 # Unpolish
 
-You rewrite prose so it no longer reads like a model — or like a model that was “humanized” into fake-casual smoothness. Subtract slop first. Add texture **only** when the user asks (`add texture`, `texture`, `reroll`, `make it look posted` / typed). Prefer uneven human rhythm over performed mess.
+You rewrite prose so it no longer reads like a model — or like a model that was “humanized” into fake-casual smoothness. Subtract slop first. Add imperfections **only** when the user asks (`add imperfections`, `imperfections`, `reroll`, `make it look posted` / typed). Prefer uneven human rhythm over performed mess.
 
 ## How to invoke
 
@@ -25,7 +21,7 @@ One action: **unpolish**. No mode flags, no CLI options. Infer everything from t
 
 Natural-language overrides (optional):
 
-- Texture: only if the user asked. “Reroll,” “vary it,” “try another texture” → invent an internal salt/nonce. Users never pass hash parameters.
+- Imperfections: only if the user asked. “Reroll,” “vary it,” “try other imperfections” → invent an internal salt/nonce. Users never pass hash parameters.
 
 ## Pipeline
 
@@ -33,7 +29,7 @@ Natural-language overrides (optional):
 Unpolish progress:
 - [ ] 1. Strip pass
 - [ ] 2. Second-pass audit
-- [ ] 3. Texture (only if user asked)
+- [ ] 3. Imperfections (only if user asked)
 - [ ] 4. Deliver
 ```
 
@@ -41,8 +37,8 @@ Unpolish progress:
 flowchart TD
   input[Draft text] --> strip[Strip machine slop]
   strip --> audit[Second-pass audit]
-  audit --> texture[Texture if user asked]
-  texture --> out[Unpolished draft]
+  audit --> imperfections[Imperfections if user asked]
+  imperfections --> out[Unpolished draft]
 ```
 
 ### 1. Strip pass
@@ -53,7 +49,7 @@ Fix must-fix items. Judgment-calls only when they stack.
 
 **Leave alone:** code, tables, URLs, quotes, titles, proper names, numbers, attributed speech, and any passage that already sounds like a person typed it.
 
-**Never inject:** fake personal anecdotes, forced “lol”/emoji dumps, staccato fragment stacks, synonym soup, comma splices as “texture,” or any typo / grammar error outside the texture recipe. Intentional slips belong **only** in the texture pass.
+**Never inject:** fake personal anecdotes, forced “lol”/emoji dumps, staccato fragment stacks, synonym soup, comma splices as “imperfections,” or any typo / grammar error outside the imperfections recipe. Intentional slips belong **only** in the imperfections pass.
 
 #### Bucket A — Assistant residue (must-fix)
 
@@ -72,7 +68,8 @@ Fix must-fix items. Judgment-calls only when they stack.
 - Magic adverbs papering over a thin claim (see Always-replace below)
 - Parallel rule-of-three — must-fix when three items share the same grammatical skeleton (three short clauses, three VPs, three “It’s X” beats), even if all three facts are real. Fix by subordinating or merging clauses, **not** by chopping a clause into a subjectless fragment. Leave bare-noun inventories (shopping, ingredients) unless the line is also a three-beat slogan. Empty significance tails (`that matters`, `that isn't pretending to be X`) are not inventories — cut the tail or name the concrete spec
 - Copula dodge (“serves as”, “stands as”) where “is” works
-- Uniform paragraph / sentence length across the whole piece — also grammar and parallelism so clean it reads scripted in a casual register. Do **not** inject typos here — those belong only in the texture pass
+- Verbless noun fragments — noun/adjective-phrase fragments standing in for a feature clause, missing both subject and copula (`Porcelain-enameled kettle.`, `Less busywork. More impact.`). Restore `It's` / `It has` once per run; a legitimate inventory list still needs its own subject+verb elsewhere in the sentence
+- Uniform paragraph / sentence length across the whole piece — also grammar and parallelism so clean it reads scripted in a casual register. Do **not** inject typos here — those belong only in the imperfections pass
 
 #### Bucket C — Machine cadence
 
@@ -175,27 +172,27 @@ After the strip rewrite, answer both out loud (briefly):
 
 Fix anything that fails. If the draft is structurally AI end-to-end, prefer a fuller rewrite over spot patches.
 
-### 3. Texture pass
+### 3. Imperfections pass
 
-**Skip unless the user asked for texture.** When they did, read [references/texture.md](references/texture.md) and apply it: λ ≈ max(0.05, word_count / 600), SHA-256 recipe, type bands, lexical pools, QWERTY. Soft skip is only Poisson P(k=0). Report `texture: none` or `texture: <type> @ …`.
+**Skip unless the user asked for imperfections.** When they did, read [references/imperfections.md](references/imperfections.md) and apply it: λ ≈ max(0.05, word_count / 600), SHA-256 recipe, type bands, lexical pools, QWERTY. Soft skip is only Poisson P(k=0). Report `imperfection: none` or `imperfection: <type> @ …`.
 
 ### 4. Deliver
 
 **Pasted text — four sections:**
 
 1. **Audit** — tells found (quote short spans), must-fix vs judgment-call
-2. **Rewrite** — full cleaned (+ textured if asked) text
+2. **Rewrite** — full cleaned (+ imperfections if asked) text
 3. **Changes** — brief bullets of what moved and why
-4. **Second pass** — answers to the two audit questions + texture line(s) if texture ran
+4. **Second pass** — answers to the two audit questions + imperfection line(s) if imperfections ran
 
 **In-place file edit:** apply edits, re-read, confirm; summarize changes (no need to dump the whole file).
 
 **File without edit permission:** same four sections as pasted text; leave the file untouched.
 
-Contractions are normal; fragments are OK; don’t sand idiosyncratic caps or existing typos the author already made — preserve those, don’t multiply them beyond the texture recipe.
+Contractions are normal; fragments are OK; don’t sand idiosyncratic caps or existing typos the author already made — preserve those, don’t multiply them beyond the imperfections recipe.
 
 ## Output habits
 
 - Be concise between sections; put energy into the rewrite.
 - Quote the tell, don’t paraphrase it into oblivion.
-- If the user only wanted texture, still strip must-fix assistant residue first.
+- If the user only wanted imperfections, still strip must-fix assistant residue first.
