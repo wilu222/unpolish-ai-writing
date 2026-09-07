@@ -113,7 +113,7 @@ cp -R references ~/.cursor/skills/unpolish-ai-writing/
 
 ## Credits
 
-Pattern research informed by [avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing) and [humanizer](https://github.com/blader/humanizer). Sources for a few extra tells and the typing-error rate: `[NOTES.md](./NOTES.md)`.
+Pattern research informed by [avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing) and [humanizer](https://github.com/blader/humanizer). Sources for a few extra tells and the typing-error rate are in NOTES.md
 
 ## License
 
