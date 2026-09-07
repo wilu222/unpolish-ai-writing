@@ -36,10 +36,10 @@ Weights below sum to **100**. Per slot, drop types with an empty or already-clai
 
 | Weight | Type | How to apply |
 | --- | --- | --- |
-| 28 | Misspelling / wrong word | Two pools below; `W3 % 10` and `W2`. Report id: `wrong_word`. |
-| 24 | Dropped apostrophe | `W1` → sentence; `W2` → eligible contraction (`don't`→`dont`, `I'm`→`Im`, `that's`→`thats`). Prefer these over ambiguous `it's`→`its`. |
+| 28 | Misspelling / wrong word | Two pools below; `W3 % 10` and `W2` pick the source; `W1` → sentence that contains it. Report id: `wrong_word`. |
+| 24 | Dropped apostrophe | `W1` → sentence with `don't` / `I'm` / `that's`; `W2` → contraction in that sentence (`don't`→`dont`, `I'm`→`Im`, `that's`→`thats`). Prefer these over ambiguous `it's`→`its`. |
 | 18 | Missing end punctuation | Eligible = paragraph-final sentences ending in `.` or `?`. `W1 %` over that pool; remove the mark. |
-| 14 | Uncapitalized sentence start | `W1` → eligible sentence; lowercase first letter (never standalone `I`). |
+| 14 | Uncapitalized sentence start | Eligible = sentences starting with a capital letter (not standalone `I`). `W1` → that pool; lowercase the first letter. |
 | 12 | Extra space | `W1` → sentence; `W2` → which single space becomes two (`I  think`). |
 | 4 | Keyboard slip | `W3` picks subtype; `W2`/`W4`/`W5` pick word/char/neighbor. |
 
@@ -47,8 +47,8 @@ Word use by type:
 
 | Type | W0 | W1 | W2 | W3 | W4 / W5 |
 | --- | --- | --- | --- | --- | --- |
-| Misspelling / wrong word | type band | (optional region) | pool index | pool prefer `W3%10` | — |
-| Dropped apostrophe | type band | sentence | contraction | — | — |
+| Misspelling / wrong word | type band | sentence with source | pool index | pool prefer `W3%10` | — |
+| Dropped apostrophe | type band | sentence with contraction | contraction | — | — |
 | Missing punctuation | type band | paragraph-final index | — | — | — |
 | Lowercase start | type band | sentence | — | — | — |
 | Extra space | type band | sentence | which space | — | — |
@@ -61,7 +61,7 @@ Do **not** invent a misspelling of a word that isn’t in the draft. Scan into t
 1. `p = W3 % 10` — if `p == 0` (~10%) prefer **Pool B**; else prefer **Pool A**
 2. If the preferred pool is empty, use the other; if both empty, this type was not eligible (should not have been on the short tape)
 3. `idx = W2 % pool.length` — one canonical form only (one row per source type that appears; do **not** give each occurrence of `to` its own vote)
-4. Apply that slip once (first occurrence in the chosen region)
+4. Apply the slip once (any occurrence) in the sentence `W1` picked
 
 **Pool A — wrong word / mix-up** (`W3 % 10 ≠ 0`, ~90%)
 
@@ -113,8 +113,7 @@ Dropped-apostrophe already covers `Im` / `dont` / `thats` (prefer those contract
 
 - Split on `.` `?` `!` into sentences; trim empties
 - Eligible = body sentences (skip mostly-quote or URL-heavy sentences)
-- **Missing end punctuation:** eligible = paragraph-final sentences ending in `.` or `?` (blank line or end of draft). `W1 %` over that pool only
-- Index = `W1 % eligible_count`
+- Eligible set depends on the drawn type (see Types table above); Index = `W1 % eligible_count`. Empty eligible set → that type was not eligible (skip it)
 
 ## Keyboard slip
 
