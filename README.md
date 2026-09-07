@@ -74,7 +74,6 @@ Unpolish this and add imperfections: [your text]
 
 **Imperfections:** `uncapitalized_start (The → the) @ sentence 0`
 
-Strip rules and word tables: [`SKILL.md`](./SKILL.md).
 
 ## Optional typing errors
 
