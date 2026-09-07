@@ -81,10 +81,10 @@ Same cleaned input always gets the same typos. “Reroll” changes the seed so 
 
 ```mermaid
 flowchart TD
-  draft["Cleaned draft (plus a reroll phrase, if asked)"] --> hash1["Hash the text into a random-looking number"]
-  hash1 --> count["Use that number to decide how many imperfections to add - often zero; longer drafts may get one or two"]
+  draft["Cleaned draft (plus a reroll phrase, if asked)"] --> hash1["Hash the text into a random number"]
+  hash1 --> count["Use that number to decide how many imperfections to add"]
   count --> hash2["Hash again, once per imperfection, to decide its type & location"]
-  hash2 --> apply["Apply it: a dropped apostrophe, a missing period, a typo, ..."]
+  hash2 --> apply["Apply the imperfection(s)"]
 ```
 
 
