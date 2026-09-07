@@ -72,7 +72,7 @@ Unpolish this and add imperfections: [your text]
 - Empty experience padding (“from start to finish”, “you’re in great hands”)
 - Signposted wrap-up (“Highly recommend… top-quality service…”)
 
-**Imperfections:** `uncapitalized_start (The → the)`
+**Imperfections:** `uncapitalized_start (My → my)`
 
 
 ## Optional typing errors
