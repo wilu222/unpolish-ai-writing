@@ -59,7 +59,7 @@ Unpolish this and add imperfections: [your text]
 
 **Output** (strip + imperfections):
 
-> the barbers listen to what you're after and they don't rush. My son's haircut was sharp and clean, one of the best he's gotten. You can tell they take pride in the work.
+> The barbers listen to what you're after and they don't rush. my son's haircut was sharp and clean, one of the best he's gotten. You can tell they take pride in the work.
 >
 > The shop is clean and easy to walk into. Quick trim or a longer appointment, both are fine.
 >
@@ -72,7 +72,7 @@ Unpolish this and add imperfections: [your text]
 - Empty experience padding (“from start to finish”, “you’re in great hands”)
 - Signposted wrap-up (“Highly recommend… top-quality service…”)
 
-**Imperfections:** `uncapitalized_start (The → the) @ sentence 0`
+**Imperfections:** `uncapitalized_start (The → the) @ sentence 1`
 
 
 ## Optional typing errors
@@ -82,7 +82,7 @@ Same cleaned input always gets the same typos. “Reroll” changes the seed so 
 ```mermaid
 flowchart TD
   draft["Cleaned draft (plus a reroll phrase, if asked)"] --> hash1["Hash the text into a random-looking number"]
-  hash1 --> count["Use that number to decide how many imperfections to add - usually zero, rarely more than one"]
+  hash1 --> count["Use that number to decide how many imperfections to add - often zero; longer drafts may get one or two"]
   count --> hash2["Hash again, once per imperfection, to decide its type & location"]
   hash2 --> apply["Apply it: a dropped apostrophe, a missing period, a typo, ..."]
 ```
@@ -91,7 +91,7 @@ flowchart TD
 
 Count examples: ~20 words → almost always 0; ~600 words → mix of 0/1/2; ~1000 words → commonly 1–2.
 
-Details and checked examples: `[references/imperfections.md](./references/imperfections.md)`.
+Details: `[references/imperfections.md](./references/imperfections.md)`.
 
 ## Install
 

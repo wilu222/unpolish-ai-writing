@@ -182,7 +182,7 @@ Fix anything that fails. If the draft is structurally AI end-to-end, prefer a fu
 
 ### 3. Imperfections pass
 
-**Skip unless the user asked for imperfections.** When they did, read [references/imperfections.md](references/imperfections.md) and apply it: λ ≈ max(0.05, word_count / 600), SHA-256 recipe, type bands, misspelling / wrong-word pools, QWERTY. Soft skip is only Poisson P(k=0). Report `imperfection: none` or `imperfection: <type> @ …` (`wrong_word` for misspelling / wrong word).
+**Skip unless the user asked for imperfections.** When they did, read [references/imperfections.md](references/imperfections.md) and apply it: λ ≈ max(0.05, word_count / 600), SHA-256 recipe, type bands, misspelling / wrong-word pools, QWERTY. Soft skip is Poisson P(k=0) or no eligible type. Report `imperfection: none` or `imperfection: <type> @ …` (`wrong_word` for misspelling / wrong word).
 
 If the user skipped deslop (imperfections only), the recipe’s `text` is the **original paste/file**, not a strip rewrite. After deslop + imperfections, hash the stripped draft.
 
