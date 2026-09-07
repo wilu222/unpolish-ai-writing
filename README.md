@@ -72,7 +72,7 @@ Unpolish this and add imperfections: [your text]
 - Empty experience padding (“from start to finish”, “you’re in great hands”)
 - Signposted wrap-up (“Highly recommend… top-quality service…”)
 
-**Imperfections:** `uncapitalized_start (The → the) @ sentence 1`
+**Imperfections:** `uncapitalized_start (The → the)`
 
 
 ## Optional typing errors
@@ -88,10 +88,6 @@ flowchart TD
 ```
 
 
-
-Count examples: ~20 words → almost always 0; ~600 words → mix of 0/1/2; ~1000 words → commonly 1–2.
-
-Details: `[references/imperfections.md](./references/imperfections.md)`.
 
 ## Install
 
