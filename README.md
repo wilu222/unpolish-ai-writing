@@ -2,7 +2,7 @@
 
 Removes signs of AI-generated writing from text using two methods:
 
-- Detect, remove, and replace common signs of AI writing 
+- Detect and remove common signs of AI writing 
 - Optionally adds sparse typing errors informed by researched human error patterns.
 
 ## How it works
