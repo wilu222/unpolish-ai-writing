@@ -1,23 +1,43 @@
 # unpolish-ai-writing
 
-Removes signs of AI-generated writing from text using up to two methods:
+Removes signs of AI-generated writing from text using two methods:
 
 - Detect, remove, and replace common signs of AI writing 
 - Optionally adds sparse typing errors informed by researched human error patterns.
 
 ## How it works
 
-Step 1 (Default): AI detection & cleanup
+### Step 1 (Default): AI detection & cleanup
 
 - Detect common AI writing patterns as documented by ["Signs of AI writing"](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) as well as tropes.fyi and other sources (view NOTES.md for more info)
 
-Step 2 (Optional): introduce human-like writing errors
+**Selected examples**
 
-- The size of the text determines the average number of expected imperfections (via a Poisson distribution). 
-- The SHA-256 hash of a seed built from the text simulates an individual trial given the distribution. 
-- If the trial returns a non-zero imperfection count, hash again with a different seed to determine the imperfection type (missing punctuation, misspelling, etc) and the placement of the imperfection within the text.
+| Pattern | Before | After |
+| --- | --- | --- |
+| Not-X-it's-Y | "It's not just X — it's Y" | State Y directly |
+| Rule of three | "skilled, attentive, and precise" | Keep the real details; drop the slogan beat |
+| Empty significance / magic adverb | "quietly transformative", "truly special" | Cut, or name what actually changed |
+| Curly quotes from chat UI | `“like this”` | `"like this"` |
+| Invented concept label | "the X paradox/trap/creep" (made-up jargon label) | Plain description, or drop the label |
+| Copula dodge | "stands as a testament to…" | "is…" |
+| Em-dash habit | "worth it—even with the queue—" | Periods, commas, or a shorter sentence |
+| Punchy fragment stack | "Less busywork. More impact. Better focus." | One concrete sentence |
 
+### Step 2 (Optional): human-like writing errors
 
+Same cleaned input always gets the same typos. “Reroll” changes the seed so you get a different set. About one error per 600 words, and often none.
+
+1. Convert the input draft (plus a reroll phrase, if asked) into a hash value
+2. Use that number to decide how many imperfections to add (Poisson from word count)
+
+![Poisson distribution of number of errors by word count](./video/poisson.gif)
+
+3. If the count is above zero, hash again once per imperfection to pick type and placement, using a weighted distribution
+
+![Distribution of imperfection type](./video/tape.gif)
+
+4. Apply the error(s)
 
 ## Usage
 
@@ -73,20 +93,6 @@ Unpolish this and add imperfections: [your text]
 - Signposted wrap-up (“Highly recommend… top-quality service…”)
 
 **Imperfections:** `uncapitalized_start (My → my)`
-
-
-## Optional typing errors
-
-Same cleaned input always gets the same typos. “Reroll” changes the seed so you get a different set. About one slip per 600 words, and often none.
-
-```mermaid
-flowchart TD
-  draft["Cleaned draft (plus a reroll phrase, if asked)"] --> hash1["Hash the text into a random number"]
-  hash1 --> count["Use that number to decide how many imperfections to add"]
-  count --> hash2["Hash again, once per imperfection, to decide its type & location"]
-  hash2 --> apply["Apply the imperfection(s)"]
-```
-
 
 
 ## Install
