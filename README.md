@@ -18,7 +18,6 @@ Removes signs of AI-generated writing from text using two methods:
 | Not-X-it's-Y | "It's not just X — it's Y" | State Y directly |
 | Rule of three | "skilled, attentive, and precise" | Keep the real details; drop the slogan beat |
 | Empty significance / magic adverb | "quietly transformative", "truly special" | Cut, or name what actually changed |
-| Curly quotes from chat UI | `“like this”` | `"like this"` |
 | Invented concept label | "the X paradox/trap/creep" (made-up jargon label) | Plain description, or drop the label |
 | Copula dodge | "stands as a testament to…" | "is…" |
 | Em-dash habit | "worth it—even with the queue—" | Periods, commas, or a shorter sentence |
