@@ -4,6 +4,8 @@ description: >-
   Agent skill that removes signs of AI-generated writing, and/or adds sparse typing
   errors (imperfections) informed by researched human error patterns. Use for deslop/strip only, imperfections only, or both.
 license: MIT
+metadata:
+  version: "1.0.0"
 ---
 
 # Unpolish

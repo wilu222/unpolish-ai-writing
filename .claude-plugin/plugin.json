@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "unpolish-ai-writing",
+  "description": "Agent skill that removes signs of AI-generated writing, and/or adds sparse typing errors (imperfections) informed by researched human error patterns. Use for deslop/strip only, imperfections only, or both.",
+  "version": "1.0.0",
+  "author": {
+    "name": "wilu222",
+    "url": "https://github.com/wilu222"
+  },
+  "homepage": "https://github.com/wilu222/unpolish-ai-writing",
+  "repository": "https://github.com/wilu222/unpolish-ai-writing",
+  "license": "MIT",
+  "keywords": ["writing", "editing", "ai-writing", "prose", "style"]
+}

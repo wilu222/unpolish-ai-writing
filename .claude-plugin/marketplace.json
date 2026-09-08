@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace-manifest.json",
+  "name": "unpolish-ai-writing",
+  "owner": {
+    "name": "wilu222",
+    "url": "https://github.com/wilu222"
+  },
+  "description": "The unpolish-ai-writing skill, installable as a Claude Code plugin.",
+  "plugins": [
+    {
+      "name": "unpolish-ai-writing",
+      "source": "./",
+      "description": "Agent skill that removes signs of AI-generated writing, and/or adds sparse typing errors (imperfections) informed by researched human error patterns. Use for deslop/strip only, imperfections only, or both.",
+      "license": "MIT",
+      "keywords": ["writing", "editing", "ai-writing", "prose", "style"]
+    }
+  ]
+}

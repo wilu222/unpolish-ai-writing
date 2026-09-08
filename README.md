@@ -104,7 +104,18 @@ Unpolish this and add imperfections: [your text]
 
 ## Install
 
-Open this repo in Claude Code or Cursor. The skill is `[SKILL.md](./SKILL.md)` plus `[references/](./references/)` (typing-error recipe, loaded only when asked).
+The skill is `[SKILL.md](./SKILL.md)` plus `[references/](./references/)` (typing-error recipe, loaded only when asked).
+
+### Claude Code plugin
+
+```
+/plugin marketplace add wilu222/unpolish-ai-writing
+/plugin install unpolish-ai-writing@unpolish-ai-writing
+```
+
+The skill is then invoked as `/unpolish-ai-writing:unpolish-ai-writing`.
+
+### Manual
 
 ```bash
 # Claude Code
