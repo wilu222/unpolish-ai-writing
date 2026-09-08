@@ -106,6 +106,22 @@ Unpolish this and add imperfections: [your text]
 
 The skill is `[SKILL.md](./SKILL.md)` plus `[references/](./references/)` (typing-error recipe, loaded only when asked).
 
+### Skills CLI
+
+Install globally with the cross-agent skills CLI:
+
+```bash
+npx skills add wilu222/unpolish-ai-writing --global
+```
+
+Update an existing install:
+
+```bash
+npx skills update unpolish-ai-writing --global
+```
+
+Omit `--global` for a project-local install. Start a new agent session or reload skills after installation.
+
 ### Claude Code plugin
 
 ```
