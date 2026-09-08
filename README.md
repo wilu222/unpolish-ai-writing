@@ -9,7 +9,7 @@ Removes signs of AI-generated writing from text using two methods:
 
 ### Step 1 (Default): AI detection & cleanup
 
-- Detect common AI writing patterns as documented by ["Signs of AI writing"](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) as well as tropes.fyi and other sources (view NOTES.md for more info)
+- Detect common AI writing patterns (view NOTES.md for more info)
 
 **Selected examples**
 
