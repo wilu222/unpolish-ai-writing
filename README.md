@@ -37,7 +37,15 @@ Same cleaned input always gets the same typos. “Reroll” changes the seed so 
 
 ![Distribution of imperfection type](./video/tape.gif)
 
-4. Apply the error(s)
+| Type | Example |
+| --- | --- |
+| Misspelling / wrong word | `could have` → `could of`, `affect` → `effect` |
+| Dropped apostrophe | `don't` → `dont`, `I'm` → `Im` |
+| Missing end punctuation | last sentence loses its `.` or `?` |
+| Uncapitalized sentence start | `The` → `the` |
+| Extra space | `I think` → `I  think` |
+| Keyboard slip | `the` → `teh`, `should` → `shuild` |
+
 
 ## Usage
 
