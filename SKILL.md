@@ -1,8 +1,7 @@
 ---
 name: unpolish-ai-writing
 description: >-
-  Agent skill that removes signs of AI-generated writing, and/or adds sparse typing
-  errors (imperfections) informed by researched human error patterns. Use for deslop/strip only, imperfections only, or both.
+  Agent skill that removes signs of AI-generated writing, and optionally adds sparse typing errors using probability distributions informed by researched human error patterns. 
 license: MIT
 metadata:
   version: "1.0.0"
