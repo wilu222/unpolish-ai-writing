@@ -74,6 +74,7 @@ Fix must-fix items. Judgment-calls only when they stack.
 #### Bucket B — False profundity (must-fix when repeated; else judgment)
 
 - Invented concept labels (“the X paradox/trap/creep”) used as if established
+- Spotlight verdict — pointing at one item and declaring it the one that matters instead of showing why. First person (`X is the part I'd keep`, `the line that sticks with me`, `what stays with me is X`) or crowd (`X is the part everyone misses`, `what nobody talks about is X`, `the real story is X`). Fix even one when it carries the payoff: cut the verdict and let the item stand, or give the concrete reason once. Keep a real preference with its own reason (`I'd keep the second draft because it's shorter`). Don't swap in a magic adverb or another label. A spotlight used as a closer counts here, not under bow-tie closers
 - Stakes inflation (API tweak framed as civilization-scale)
 - Vague “experts say” / unnamed authorities
 - Magic adverbs papering over a thin claim (see Always-replace below)
