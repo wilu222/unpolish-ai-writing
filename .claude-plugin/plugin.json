@@ -10,5 +10,6 @@
   "homepage": "https://github.com/wilu222/unpolish-ai-writing",
   "repository": "https://github.com/wilu222/unpolish-ai-writing",
   "license": "MIT",
+  "icon": "./assets/icon.png",
   "keywords": ["writing", "editing", "ai-writing", "prose", "style"]
 }
