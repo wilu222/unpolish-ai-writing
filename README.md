@@ -30,11 +30,11 @@ Same cleaned input always gets the same typos. “Reroll” changes the seed so 
 1. Convert the input draft (plus a reroll phrase, if asked) into a hash value
 2. Use that number to decide how many imperfections to add (Poisson from word count)
 
-![Poisson distribution of number of errors by word count](./video/poisson.gif)
+![Poisson distribution of number of errors by word count](./media/poisson.gif)
 
 3. If the count is above zero, hash again once per imperfection to pick type and placement, using a weighted distribution
 
-![Distribution of imperfection type](./video/tape.gif)
+![Distribution of imperfection type](./media/tape.gif)
 
 | Type | Example |
 | --- | --- |
