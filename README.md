@@ -106,6 +106,8 @@ Unpolish this and add imperfections: [your text]
 
 The skill is `[SKILL.md](./SKILL.md)` plus `[references/](./references/)` (typing-error recipe, loaded only when asked).
 
+`skills/unpolish-ai-writing/` is an identical copy for the Codex plugin (`.codex-plugin/plugin.json`). Edit the root files, then run `cp -R SKILL.md references skills/unpolish-ai-writing/`; CI fails if the copies differ.
+
 ### Skills CLI
 
 Install globally with the cross-agent skills CLI:
